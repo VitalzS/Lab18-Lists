@@ -1,0 +1,39 @@
+#include <iostream>
+#include <list>
+
+using namespace std;
+
+void circularElimination(int n, int k) {
+    list<int> circle;
+    for (int i = 1; i <= n; ++i) {
+        circle.push_back(i);
+    }
+
+    auto it = circle.begin(); // start from beginning
+
+    while (!circle.empty()) {
+        // Advance k-1 times (because current element is counted as 1)
+        for (int count = 1; count < k; ++count) {
+            ++it;
+            if (it == circle.end()) it = circle.begin(); // wrap around
+        }
+
+        // Print and remove current element
+        cout << *it << " ";
+        it = circle.erase(it); // erase returns the next element
+        if (it == circle.end()) it = circle.begin(); // wrap around again if needed
+    }
+    cout << endl;
+}
+
+int main() {
+    int n, k;
+    cout << "Enter number of elements (n): ";
+    cin >> n;
+    cout << "Enter step value (k): ";
+    cin >> k;
+
+    circularElimination(n, k);
+
+    return 0;
+}
