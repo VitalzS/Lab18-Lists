@@ -1,0 +1,85 @@
+// Lab18 lists remove dups.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+#include <iostream>
+#include <list>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+class Person {
+private:
+    string name;
+    int age;
+
+public:
+    // Constructor
+    Person(string n = "NoName", int a = 0) : name(n), age(a) {}
+
+    // Accessors
+    string getName() const { return name; }
+    int getAge() const { return age; }
+
+    // Overload less-than operator for sorting
+    bool operator<(const Person& other) const {
+        if (name != other.name)
+            return name < other.name;
+        return age < other.age;
+    }
+
+    // Overload equality operator
+    bool operator==(const Person& other) const {
+        return name == other.name && age == other.age;
+    }
+
+    // Overload output operator
+    friend ostream& operator<<(ostream& os, const Person& p) {
+        os << p.name << ", " << p.age;
+        return os;
+    }
+};
+
+void eliminateDuplicates(list<Person>& list1, list<Person>& list2) {
+    list1.sort();
+    list2.sort();
+
+    // Remove each element in list1 that also exists in list2
+    for (auto it = list2.begin(); it != list2.end(); ++it) {
+        list1.remove(*it); // removes all matching elements
+    }
+}
+
+
+int main() {
+    list<Person> list1 = {
+        {"Bart", 10},
+        {"Homer", 39},
+        {"Lisa", 8},
+        {"Marge", 36},
+        {"Milhouse", 10},
+        {"Ned", 40}
+    };
+
+    list<Person> list2 = {
+        {"Bart", 10},
+        {"Homer", 39},
+        {"Krusty", 45},
+        {"Moe", 48}
+    };
+
+    // Print original lists
+    cout << "List 1 before elimination:\n";
+    for (const auto& p : list1) cout << p << endl;
+
+    cout << "\nList 2:\n";
+    for (const auto& p : list2) cout << p << endl;
+
+    // Eliminate duplicates
+    eliminateDuplicates(list1, list2);
+
+    // Print modified list1
+    cout << "\nList 1 after elimination:\n";
+    for (const auto& p : list1) cout << p << endl;
+
+    return 0;
+}
